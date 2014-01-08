@@ -31,12 +31,7 @@ public class SWN {
 	  String[] data = line.split("\t");
 	  String wordTypeMarker = data[0];
 
-	  // Example line:
-	  // POS ID PosS NegS SynsetTerm#sensenumber Desc
-	  // a 00009618 0.5 0.25 spartan#4 austere#3 ascetical#2
-	  // ascetic#2 practicing great self-denial;...etc
-
-	  // Is it a valid line? Otherwise, through exception.
+	  
 	  if (data.length != 6) {
 	    throw new IllegalArgumentException(
 					       "Incorrect tabulation format in file, line: "
@@ -74,16 +69,12 @@ public class SWN {
 	}
       }
 
-      // Go through all the terms.
+
       for (Map.Entry<String, HashMap<Integer, Double>> entry : tempDictionary
 	     .entrySet()) {
 	String word = entry.getKey();
 	Map<Integer, Double> synSetScoreMap = entry.getValue();
 
-	// Calculate weighted average. Weigh the synsets according to
-	// their rank.
-	// Score= 1/2*first + 1/3*second + 1/4*third ..... etc.
-	// Sum = 1/1 + 1/2 + 1/3 ...
 	double score = 0.0;
 	double sum = 0.0;
 	for (Map.Entry<Integer, Double> setScore : synSetScoreMap
@@ -107,7 +98,7 @@ public class SWN {
   public String extract(String word, String pos) {
 	 
     double value= 0;
-   // System.out.println(word);
+   
     value = dictionary.get(word + "#" + pos)==null?0:dictionary.get(word + "#" + pos);
     String feeling=null;
     
@@ -127,7 +118,7 @@ public class SWN {
 public String extractSemantics(String word, String pos) {
 	 
     double value= 0;
-   // System.out.println(word);
+   
     value = dictionary.get(word + "#" + pos)==null?0:dictionary.get(word + "#" + pos);
     String feeling=null;
     
@@ -142,26 +133,10 @@ public String extractSemantics(String word, String pos) {
 public double extractValue(String word, String pos) {
 	 
     double value= 0;
-   // System.out.println(word);
+   
     value = dictionary.get(word + "#" + pos)==null?0:dictionary.get(word + "#" + pos);
     String feeling=null;
     
     return value;
   }
 }
-
-  /*
-  public static void main(String [] args) throws IOException {
-    if(args.length<1) {
-      System.err.println("Usage: java SentiWordNetDemoCode <pathToSentiWordNetFile>");
-      return;
-    }
-    
-    String pathToSWN = args[0];
-    SentiWordNetDemoCode sentiwordnet = new SentiWordNetDemoCode(pathToSWN);
-    
-    System.out.println("good#a "+sentiwordnet.extract("good", "a"));
-    System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
-    System.out.println("blue#a "+sentiwordnet.extract("blue", "a"));
-    System.out.println("blue#n "+sentiwordnet.extract("blue", "n"));
-  }*/
